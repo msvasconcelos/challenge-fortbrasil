@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { getRepository } from 'typeorm';
 
 import Institution from '../models/Institution';
