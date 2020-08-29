@@ -19,11 +19,7 @@ export default class CreateInstitution1598725653158 implements MigrationInterfac
             type: 'varchar',
           },
           {
-            name: 'description',
-            type: 'varchar',
-          },
-          {
-            name: 'status',
+            name: 'location',
             type: 'varchar',
           },
           {
