@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import CreateInstitutionService from '../services/CreateInstitutionService';
 import ListInstitutionService from '../services/ListInstitutionService';
+import ListAllInstitutionService from '../services/ListAllInstitutionService';
+import ListFilterInstitutionService from '../services/ListFilterInstitutionService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticate';
 import UpdateInstitutionService from '../services/UpdateInstitutionService';
 import DeleteInstitutionService from '../services/DeleteInstitutionService';
@@ -21,17 +23,39 @@ institutionRouter.get('/', async (request, response) => {
   return response.json(listInstitution);
 });
 
+institutionRouter.get('/all', async (request, response) => {
+  const listAllInstitutionService = new ListAllInstitutionService();
+
+  const listAllInstitution = await listAllInstitutionService.execute();
+
+  return response.json(listAllInstitution);
+});
+
 institutionRouter.post('/', async (request, response) => {
   const {
     name, location, user_id,
   } = request.body;
 
-  const createUser = new CreateInstitutionService();
+  const createInstitution = new CreateInstitutionService();
 
-  const institution = await createUser.execute({
+  const institution = await createInstitution.execute({
     name,
     location,
     user_id,
+  });
+
+  return response.json(institution);
+});
+
+institutionRouter.post('/filter', async (request, response) => {
+  const {
+    location,
+  } = request.body;
+
+  const filterInstitution = new ListFilterInstitutionService();
+
+  const institution = await filterInstitution.execute({
+    location,
   });
 
   return response.json(institution);
