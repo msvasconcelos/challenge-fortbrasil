@@ -23,15 +23,14 @@ institutionRouter.get('/', async (request, response) => {
 
 institutionRouter.post('/', async (request, response) => {
   const {
-    name, description, status, user_id,
+    name, location, user_id,
   } = request.body;
 
   const createUser = new CreateInstitutionService();
 
   const institution = await createUser.execute({
     name,
-    description,
-    status,
+    location,
     user_id,
   });
 
@@ -41,16 +40,15 @@ institutionRouter.post('/', async (request, response) => {
 institutionRouter.put('/', async (request, response) => {
   // const user_id = request.user.id;
   const {
-    id, name, description, status,
+    id, name, location,
   } = request.body;
 
   const institutionUpdate = new UpdateInstitutionService();
 
   const institution = institutionUpdate.execute({
     id,
-    description,
+    location,
     name,
-    status,
   });
 
   return response.json(institution);
