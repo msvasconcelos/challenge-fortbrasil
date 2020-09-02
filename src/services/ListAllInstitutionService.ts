@@ -3,12 +3,12 @@ import { getRepository } from 'typeorm';
 
 import Institution from '../models/Institution';
 
-export default class ListInstitutionService {
+export default class ListAllInstitutionService {
   public async execute(): Promise<Institution[]> {
     const institutionRepository = getRepository(Institution);
 
-    const list = await institutionRepository.find();
+    const listAll = await institutionRepository.find();
 
-    return list;
+    return listAll;
   }
 }

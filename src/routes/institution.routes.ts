@@ -1,9 +1,12 @@
 import { Router } from 'express';
 import CreateInstitutionService from '../services/CreateInstitutionService';
 import ListInstitutionService from '../services/ListInstitutionService';
+import ListAllInstitutionService from '../services/ListAllInstitutionService';
+import ListFilterInstitutionService from '../services/ListFilterInstitutionService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticate';
 import UpdateInstitutionService from '../services/UpdateInstitutionService';
 import DeleteInstitutionService from '../services/DeleteInstitutionService';
+import GetOneInstitutionService from '../services/GetOneInstitutionService';
 
 const institutionRouter = Router();
 
@@ -21,14 +24,34 @@ institutionRouter.get('/', async (request, response) => {
   return response.json(listInstitution);
 });
 
+institutionRouter.get('/:id', async (request, response) => {
+  const { id } = request.params;
+
+  const getOneInstitution = new GetOneInstitutionService();
+
+  const getOne = await getOneInstitution.execute({
+    id,
+  });
+
+  return response.json(getOne);
+});
+
+institutionRouter.get('/all', async (request, response) => {
+  const listAllInstitutionService = new ListAllInstitutionService();
+
+  const listAllInstitution = await listAllInstitutionService.execute();
+
+  return response.json(listAllInstitution);
+});
+
 institutionRouter.post('/', async (request, response) => {
   const {
     name, location, user_id,
   } = request.body;
 
-  const createUser = new CreateInstitutionService();
+  const createInstitution = new CreateInstitutionService();
 
-  const institution = await createUser.execute({
+  const institution = await createInstitution.execute({
     name,
     location,
     user_id,
@@ -37,10 +60,35 @@ institutionRouter.post('/', async (request, response) => {
   return response.json(institution);
 });
 
-institutionRouter.put('/', async (request, response) => {
+// institutionRouter.get('/filter/:location', async (request, response) => {
+//  const { location } = request.params;
+
+//  const filterInstitution = new ListFilterInstitutionService();
+
+//  const institution = await filterInstitution.execute({
+//    location,
+//  });
+//  console.log(location);
+//  return response.json(institution);
+// });
+
+institutionRouter.post('/filter', async (request, response) => {
+  const { location } = request.body;
+
+  const filterInstitution = new ListFilterInstitutionService();
+
+  const institution = await filterInstitution.execute({
+    location,
+  });
+  console.log(location);
+  return response.json(institution);
+});
+
+institutionRouter.put('/:id', async (request, response) => {
   // const user_id = request.user.id;
+  const { id } = request.params;
   const {
-    id, name, location,
+    name, location,
   } = request.body;
 
   const institutionUpdate = new UpdateInstitutionService();
