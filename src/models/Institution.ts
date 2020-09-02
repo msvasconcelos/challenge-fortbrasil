@@ -19,13 +19,6 @@ export default class Institution {
   name: string;
 
   @Column()
-  user_id: string;
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
-  @Column()
   location: string;
 
   @CreateDateColumn()

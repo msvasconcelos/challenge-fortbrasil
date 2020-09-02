@@ -1,27 +1,23 @@
 /* eslint-disable class-methods-use-this */
 import { getRepository } from 'typeorm';
-
 import Institution from '../models/Institution';
 
 interface Request {
-  name: string;
-  location: string;
+  id: string;
 }
 
-export default class CreateInstitutionService {
+export default class GetOneInstitutionService {
   public async execute({
-    name,
-    location,
+    id,
   }: Request): Promise<Institution> {
     const institutionRepository = getRepository(Institution);
 
-    const institution = institutionRepository.create({
-      name,
-      location,
-    });
+    const oneInstitution = await institutionRepository.findOne(id);
 
-    await institutionRepository.save(institution);
-
-    return institution;
+    if (!oneInstitution) {
+      throw new Error('Institution not found');
+    }
+    // console.log(oneInstitution);
+    return oneInstitution;
   }
 }
